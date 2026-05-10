@@ -245,7 +245,7 @@ def show_create_task(w_opts, a_opts):
         c1, c2, c3 = st.columns([2, 2, 3])
         worker_sel = c1.selectbox("Assign Worker", options=list(w_opts.keys()))
         ex_date = c2.date_input("Execution Date", datetime.now())
-        m_notes = c3.text_input("Manager General Notes")
+        m_notes = c3.text_input("Main Instructions")
         st.markdown('</div>', unsafe_allow_html=True)
 
     if 'rows' not in st.session_state:
@@ -254,10 +254,10 @@ def show_create_task(w_opts, a_opts):
     st.subheader("🏠 Flat Details")
     for i, row in enumerate(st.session_state.rows):
         r1, r2, r3, r4 = st.columns([3, 2, 2, 4])
-        st.session_state.rows[i]['apartment'] = r1.selectbox(f"Apt {i}", options=list(a_opts.keys()), key=f"apt_{i}")
-        st.session_state.rows[i]['start'] = r2.text_input(f"Start {i}", value=row['start'], key=f"st_{i}")
-        st.session_state.rows[i]['end'] = r3.text_input(f"End {i}", value=row['end'], key=f"en_{i}")
-        st.session_state.rows[i]['notes'] = r4.text_input(f"Notes {i}", value=row['notes'], key=f"nt_{i}")
+        st.session_state.rows[i]['Apartment'] = r1.selectbox(f"Apt {i}", options=list(a_opts.keys()), key=f"apt_{i}")
+        st.session_state.rows[i]['Start Time'] = r2.text_input(f"Start {i}", value=row['start'], key=f"st_{i}")
+        st.session_state.rows[i]['End Time'] = r3.text_input(f"End {i}", value=row['end'], key=f"en_{i}")
+        st.session_state.rows[i]['Instructions'] = r4.text_input(f"Notes {i}", value=row['notes'], key=f"nt_{i}")
 
     if st.button("➕ Add Another Flat"):
         st.session_state.rows.append({'apartment': list(a_opts.keys())[0], 'start': '09:00', 'end': '11:00', 'notes': ''})
@@ -365,7 +365,7 @@ def show_create_task(w_opts, a_opts):
 
 # --- 6. Admin: Monitor Page ---
 def show_monitor_tasks():
-    st.title("🔍 Monitor Work Orders")
+    st.title("🔍 Search Work Orders")
 
     df_o = pd.DataFrame(get_baserow_rows(WORK_ORDERS_TABLE_ID))
     df_d = pd.DataFrame(get_baserow_rows(JOB_DETAILS_TABLE_ID))
@@ -446,7 +446,7 @@ def show_monitor_tasks():
                 "Start Time":       detail_rows['actual_start_time'].values,
                 # ✅ Fix 3c: add actual end time column
                 "End Time":         detail_rows['actual_end_time'].values if 'actual_end_time' in detail_rows.columns else "—",
-                "Notes":            detail_rows['notes'].values,
+                "Instructions":            detail_rows['notes'].values,
             })
             st.table(display)
 
@@ -470,8 +470,8 @@ def main():
         else:
             with st.sidebar:
                 st.title("🛠️ EcoNest Admin")
-                choice = st.radio("Navigation", ["➕ Create Task", "🔍 Monitor Tasks"])
-                st.divider() # بيعمل خط فاصل شيك
+                choice = st.radio("Navigation", ["➕ Create Task", "🔍 Search Tasks"])
+                st.divider() 
                 st.markdown("""
                     <div style='text-align: center; color: gray; font-size: 0.8em;'>
                         Developed by: <br>
