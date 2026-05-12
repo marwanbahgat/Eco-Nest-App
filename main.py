@@ -377,6 +377,13 @@ def show_create_task(w_opts, a_opts):
             st.text_input("Subject", value=res["email_subject"], key="email_subj")
             st.text_area("Email Body", value=res["email_body"], height=350, key="email_body")
 
+        st.divider()
+        if st.button("➕ Create New Task", type="primary", use_container_width=True):
+            st.session_state.order_saved = False
+            st.session_state.last_result = None
+            st.session_state.rows = [{'apartment': list(a_opts.keys())[0] if a_opts else None, 'start': '09:00', 'end': '11:00', 'notes': ''}]
+            st.rerun()
+
 # --- 6. Admin: Monitor Page ---
 def show_monitor_tasks():
     st.title("🔍 Monitor Work Orders")
