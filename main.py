@@ -348,6 +348,9 @@ def show_create_task(w_opts, a_opts):
                 f"Best regards,\nEcoNest Management"
             )
 
+            # ✅ Clear cache so the worker interface immediately sees the new order
+            st.cache_data.clear()
+
             # ✅ Lock the button FIRST and store results in session state, then rerun
             # so the button re-renders as disabled before the user can click again.
             st.session_state.order_saved = True
